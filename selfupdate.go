@@ -17,7 +17,7 @@ import (
 	"github.com/gokrazy/updater"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/damdo/gokrazy-selfupdate/update"
+	updateapi "github.com/damdo/gokrazy-selfupdate/api/v1alpha1"
 	yaml "gopkg.in/yaml.v3"
 )
 
@@ -27,7 +27,7 @@ var buildTimestamp = "myBuildTimestamp"
 
 var updateEndpoint, checkInterval string
 
-func selfupdate(ctx context.Context, response *update.Response) error {
+func selfupdate(ctx context.Context, response *updateapi.Response) error {
 	log.Println("starting self-update procedure")
 
 	var rootReader, bootReader, mbrReader io.ReadCloser
@@ -130,8 +130,8 @@ func selfupdate(ctx context.Context, response *update.Response) error {
 	return nil
 }
 
-func checkForUpdates(ctx context.Context) (*update.Response, error) {
-	body := update.Request{
+func checkForUpdates(ctx context.Context) (*updateapi.Response, error) {
+	body := updateapi.Request{
 		APIVersion: "update.gokrazy.org/v1alpha1",
 		Kind:       "GokrazyUpdateRequest",
 	}
@@ -157,7 +157,7 @@ func checkForUpdates(ctx context.Context) (*update.Response, error) {
 	defer resp.Body.Close()
 	respBody, _ := ioutil.ReadAll(resp.Body)
 
-	var response update.Response
+	var response updateapi.Response
 	err = yaml.Unmarshal(respBody, &response)
 	if err != nil {
 		return nil, err
@@ -166,7 +166,7 @@ func checkForUpdates(ctx context.Context) (*update.Response, error) {
 	return &response, nil
 }
 
-func shouldUpdate(response *update.Response) bool {
+func shouldUpdate(response *updateapi.Response) bool {
 
 	if response.Spec.Device.ID != deviceID {
 		log.Errorf("update response's device id: %s, differs from the actual device id: %s, aborting", response.Spec.Device.ID, deviceID)
