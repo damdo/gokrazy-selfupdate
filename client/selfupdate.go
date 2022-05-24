@@ -167,7 +167,6 @@ func checkForUpdates(ctx context.Context) (*updateapi.Response, error) {
 }
 
 func shouldUpdate(response *updateapi.Response) bool {
-
 	if response.Spec.Device.ID != deviceID {
 		log.Errorf("update response's device id: %s, differs from the actual device id: %s, aborting", response.Spec.Device.ID, deviceID)
 		return false
