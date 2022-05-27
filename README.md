@@ -6,4 +6,6 @@ This repository contains:
 - The selfupdate protocol specification, under [/protocol](./protocol)
 - The selfupdate versioned api that implements the interfaces of the specification, under [/api](./api)
 - A selfupdate client that implements the protocol, to be deployed on the grokrazy device, under [/client](./client)
-- A selfupdate server that implements the protocol, to be deployed as a central service for updates, under [/server](./server)
+
+selfupdate server:
+- For a reference selfupdate server that implements the protocol and other useful tooling around building for and managing gokrazy devices see: [gokrazy-operator](https://github.com/damdo/gokrazy-operator)
